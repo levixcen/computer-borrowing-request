@@ -17,6 +17,8 @@ class CreateUsersTable extends Migration
             $table->uuid('id')
                 ->primary();
             $table->string('name');
+            $table->enum('role', ['Administrator', 'User'])
+                ->default('User');
             $table->string('email')
                 ->unique();
             $table->timestamp('email_verified_at')
