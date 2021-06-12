@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BorrowingRequestStoreRequest;
 use App\Models\BorrowingRequest;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class BorrowingRequestController extends Controller
      */
     public function index()
     {
-        //
+        return view('borrowing-request.index', [
+            'borrowingRequests' => BorrowingRequest::paginate(10),
+        ]);
     }
 
     /**
@@ -24,18 +27,18 @@ class BorrowingRequestController extends Controller
      */
     public function create()
     {
-        //
+        return view('borrowing-request.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\BorrowingRequestStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BorrowingRequestStoreRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -46,7 +49,9 @@ class BorrowingRequestController extends Controller
      */
     public function show(BorrowingRequest $borrowingRequest)
     {
-        //
+        return view('borrowing-request.show', [
+            'borrowingRequest' => $borrowingRequest,
+        ]);
     }
 
     /**

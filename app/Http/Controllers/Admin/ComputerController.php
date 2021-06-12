@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ComputerStoreRequest;
+use App\Http\Requests\Admin\ComputerUpdateRequest;
 use App\Models\Computer;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class ComputerController extends Controller
@@ -14,7 +18,9 @@ class ComputerController extends Controller
      */
     public function index()
     {
-        //
+        return view('computer.index', [
+            'computers' => Computer::paginate(10),
+        ]);
     }
 
     /**
@@ -24,18 +30,25 @@ class ComputerController extends Controller
      */
     public function create()
     {
-        //
+        return view('computer.create', [
+            'rooms' => Room::all(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\ComputerStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComputerStoreRequest $request)
     {
-        //
+        $computer = new Computer;
+        $computer->room()->associate($request->room);
+        $computer->fill($request->only(['hostname', 'ip_address']));
+        $computer->save();
+
+        return redirect()->route('computers.index');
     }
 
     /**
@@ -57,19 +70,25 @@ class ComputerController extends Controller
      */
     public function edit(Computer $computer)
     {
-        //
+        return view('computer.edit', [
+            'computer' => $computer,
+            'rooms' => Room::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\ComputerUpdateRequest  $request
      * @param  \App\Models\Computer  $computer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Computer $computer)
+    public function update(ComputerUpdateRequest $request, Computer $computer)
     {
-        //
+        $computer->room()->associate($request->room);
+        $computer->update($request->only(['hostname', 'ip_address']));
+
+        return redirect()->route('computers.index');
     }
 
     /**
@@ -80,6 +99,8 @@ class ComputerController extends Controller
      */
     public function destroy(Computer $computer)
     {
-        //
+        $computer->delete();
+
+        return redirect()->back();
     }
 }

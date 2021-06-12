@@ -18,7 +18,7 @@ class CreateRoomsTable extends Migration
                 ->primary();
             $table->uuid('room_type_id')
                 ->nullable();
-            $table->string('number');
+            $table->string('name');
             $table->boolean("available")
                 ->default(0);
             $table->timestamps();
