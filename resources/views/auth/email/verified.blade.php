@@ -1,7 +1,7 @@
-@extends('template.base', ['title' => 'Login'])
+@extends('template.base', ['title' => 'Email Verified'])
 
 @section('contents')
     <div>
-        Verified email
+        Email verified
     </div>
 @endsection

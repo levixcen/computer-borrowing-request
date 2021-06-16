@@ -1,4 +1,4 @@
-@extends('template.base', ['title' => 'Login'])
+@extends('template.base', ['title' => 'Register'])
 
 @section('contents')
     <div>
