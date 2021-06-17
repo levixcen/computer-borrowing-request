@@ -31,7 +31,7 @@ class AuthenticationController extends Controller
     {
         $rememberMe = false;
 
-        if (!empty($request->remember_me) && $request->remember_me === '1') {
+        if (!empty($request->remember_me) && $request->remember_me === 'on') {
             $rememberMe = true;
         }
 
@@ -72,6 +72,22 @@ class AuthenticationController extends Controller
         $user->save();
 
         return redirect()->route('login');
+    }
+
+    /**
+     * Logged current user out from session and clears saved authentication data.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('auth.form.login');
     }
 
     /**

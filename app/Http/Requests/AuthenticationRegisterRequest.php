@@ -34,6 +34,7 @@ class AuthenticationRegisterRequest extends FormRequest
             'password' => [
                 'required',
                 'min:8',
+                'confirmed',
             ],
         ];
     }

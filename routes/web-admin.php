@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', HomeController::class)
+    ->name('home');
+
+Route::resource('rooms', RoomController::class)
+    ->except(['show']);
+
+Route::resource('computers', ComputerController::class)
+    ->except(['show']);
+
+Route::resource('borrowing-requests', BorrowingRequestController::class)
+    ->only(['index']);
+
+Route::resource('schedules', ScheduleController::class)
+    ->only(['index', 'show']);

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', HomeController::class);
+Route::get('/', HomeController::class)
+    ->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::resource('borrowing-requests', BorrowingRequestController::class)
+        ->only(['index', 'create', 'store', 'show']);
+
+    Route::resource('schedules', ScheduleController::class)
+        ->only(['index', 'show']);
+
+});
+
+
+
