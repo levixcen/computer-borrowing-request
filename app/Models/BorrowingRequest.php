@@ -24,6 +24,17 @@ class BorrowingRequest extends Model
     ];
 
     /**
+     * Local scope for get unchecked borrowing requests.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNoStatus($query)
+    {
+        return $query->whereNull('status');
+    }
+
+    /**
      * Relationship to User model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -23,6 +23,12 @@ class Schedule extends Model
         'password',
     ];
 
+    /**
+     * Local scope for get current within time schedules.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeCurrent($query)
     {
         return $query->where([
