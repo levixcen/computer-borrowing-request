@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BorrowingRequestStoreRequest;
 use App\Models\BorrowingRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BorrowingRequestController extends Controller
@@ -38,7 +39,18 @@ class BorrowingRequestController extends Controller
      */
     public function store(BorrowingRequestStoreRequest $request)
     {
-        dd($request->all());
+        $data = [
+            'start_datetime' => Carbon::createFromFormat('Y-m-d H:i', $request->date_use . ' ' . $request->start_time),
+            'end_datetime' => Carbon::createFromFormat('Y-m-d H:i', $request->date_use . ' ' . $request->end_time),
+            'reason' => $request->reason,
+        ];
+
+        $borrowingRequest = new BorrowingRequest;
+        $borrowingRequest->user()->associate($request->user());
+        $borrowingRequest->fill($data);
+        $borrowingRequest->save();
+
+        return redirect()->route('borrowing-requests.index');
     }
 
     /**
