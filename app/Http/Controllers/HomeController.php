@@ -15,7 +15,10 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $schedules = Schedule::current()->paginate(5);
+        $schedules = Schedule::current()
+            ->where('user_id', $request->user()->id)
+            ->paginate(5);
+
         return view('user.home.index', ['schedules' => $schedules]);
     }
 }

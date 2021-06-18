@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $schedules = Schedule::where('user_id', $request->user()->id)
-            ->get();
+            ->paginate(5);
 
         return view('schedule.index', [
             'schedules' => $schedules,
