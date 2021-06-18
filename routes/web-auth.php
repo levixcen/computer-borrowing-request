@@ -15,21 +15,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['as' => 'form.'], function () {
+Route::group(['middleware' => ['guest']], function () {
 
-    Route::get('/login', [AuthenticationController::class, 'showLoginForm'])
+    Route::group(['as' => 'form.'], function () {
+
+        Route::get('/login', [AuthenticationController::class, 'showLoginForm'])
+            ->name('login');
+
+        Route::get('/register', [AuthenticationController::class, 'showRegisterForm'])
+            ->name('register');
+
+    });
+
+    Route::post('/login', [AuthenticationController::class, 'login'])
         ->name('login');
 
-    Route::get('/register', [AuthenticationController::class, 'showRegisterForm'])
+    Route::post('/register', [AuthenticationController::class, 'register'])
         ->name('register');
 
 });
 
-Route::post('/login', [AuthenticationController::class, 'login'])
-    ->name('login');
+Route::group(['middleware' => ['auth']], function () {
 
-Route::post('/register', [AuthenticationController::class, 'register'])
-    ->name('register');
+    Route::post('/logout', [AuthenticationController::class, 'logout'])
+        ->name('logout');
 
-Route::post('/logout', [AuthenticationController::class, 'logout'])
-    ->name('logout');
+});

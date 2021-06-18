@@ -23,6 +23,14 @@ class Schedule extends Model
         'password',
     ];
 
+    public function scopeCurrent($query)
+    {
+        return $query->where([
+            ['start_datetime', '<', now()],
+            ['end_datetime', '>', now()]
+        ]);
+    }
+
     /**
      * Relationship to BorrowingRequest model.
      *

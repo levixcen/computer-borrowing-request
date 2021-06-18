@@ -1838,7 +1838,14 @@ module.exports = {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _href_method__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./href-method */ "./resources/js/href-method.js");
+
+window.hrefMethod = _href_method__WEBPACK_IMPORTED_MODULE_0__.default;
+window.hrefMethod.autoInit();
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -1872,6 +1879,88 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/href-method.js":
+/*!*************************************!*\
+  !*** ./resources/js/href-method.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var spoofedFormMethods = ['put', 'patch', 'delete'];
+var allowedFormMethods = ['post', 'put', 'patch', 'delete'];
+
+var onElementClickListener = function onElementClickListener(e) {
+  var formMethod = e.currentTarget.getAttribute('data-method').toLowerCase();
+
+  if (!allowedFormMethods.includes(formMethod)) {
+    return;
+  }
+
+  if (!e.currentTarget.getAttribute('href')) {
+    return;
+  }
+
+  e.preventDefault();
+  var formElement = document.createElement('form');
+  formElement.method = 'POST';
+  formElement.action = e.currentTarget.getAttribute('href');
+  formElement.style.display = 'none';
+
+  if (spoofedFormMethods.includes(formMethod)) {
+    var inputMethodElement = document.createElement('input');
+    inputMethodElement.type = 'hidden';
+    inputMethodElement.name = '_method';
+    inputMethodElement.value = formMethod;
+    formElement.appendChild(inputMethodElement);
+  }
+
+  var seekAttribute = 'data-form-';
+  e.currentTarget.getAttributeNames().forEach(function (attribute) {
+    var value = e.currentTarget.getAttribute(attribute);
+
+    if (attribute.startsWith(seekAttribute)) {
+      var fieldName = attribute.substr(seekAttribute.length);
+      var inputElement = document.createElement('input');
+      inputElement.type = 'hidden';
+      inputElement.name = fieldName;
+      inputElement.value = value;
+      formElement.appendChild(inputElement);
+    }
+  });
+  document.body.appendChild(formElement);
+  formElement.submit();
+};
+
+var init = function init(element) {
+  element.addEventListener('click', onElementClickListener);
+};
+
+var onDocumentReady = function onDocumentReady() {
+  var elements = document.querySelectorAll('a[data-method]');
+
+  if (elements === null) {
+    return;
+  }
+
+  elements.forEach(function (element) {
+    init(element);
+  });
+};
+
+var autoInit = function autoInit() {
+  document.addEventListener('DOMContentLoaded', onDocumentReady);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  autoInit: autoInit
+});
 
 /***/ }),
 
@@ -19355,6 +19444,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	

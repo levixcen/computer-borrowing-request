@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', HomeController::class)
-    ->name('home');
-
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/', HomeController::class)
+        ->name('home');
 
     Route::resource('borrowing-requests', BorrowingRequestController::class)
         ->only(['index', 'create', 'store', 'show']);

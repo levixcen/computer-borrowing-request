@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('auth')
                 ->name('auth.')
-                ->middleware(['web', 'guest'])
+                ->middleware(['web'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web-auth.php'));
 

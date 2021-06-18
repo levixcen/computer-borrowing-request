@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,6 +15,7 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('user.home.index');
+        $schedules = Schedule::current()->paginate(5);
+        return view('user.home.index', ['schedules' => $schedules]);
     }
 }
