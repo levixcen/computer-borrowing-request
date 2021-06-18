@@ -27,7 +27,7 @@ class BorrowingRequestController extends Controller
      */
     public function create()
     {
-        return view('borrowing-request.create');
+        return view('user.borrowing-request.create');
     }
 
     /**

@@ -22,21 +22,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-gray-200">
+                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
                         <td class="p-2">2021-08-02</td>
                         <td class="p-2">Begitu</td>
                         <td class="p-2">2021-08-02 14:00</td>
                         <td class="p-2">2021-08-02 15:00</td>
                         <td class="p-2">Accepted</td>
                     </tr>
-                    <tr class="bg-gray-200">
+                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
                         <td class="p-2">2021-08-02</td>
                         <td class="p-2">Begitu</td>
                         <td class="p-2">2021-08-02 14:00</td>
                         <td class="p-2">2021-08-02 15:00</td>
                         <td class="p-2">Rejected</td>
                     </tr>
-                    <tr class="bg-gray-200">
+                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
                         <td class="p-2">2021-08-02</td>
                         <td class="p-2">Begitu</td>
                         <td class="p-2">2021-08-02 14:00</td>

@@ -24,7 +24,7 @@ class BorrowingRequestStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => [
+            'date_use' => [
                 'required',
                 'date',
             ],
@@ -35,7 +35,7 @@ class BorrowingRequestStoreRequest extends FormRequest
             'end_time' => [
                 'required',
                 'date_format:H:i',
-                'after:end_time',
+                'after:start_time',
             ],
             'reason' => [
                 'required',
