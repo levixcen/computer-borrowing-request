@@ -20,6 +20,16 @@ class Room extends Model
     ];
 
     /**
+     * Relationship to Computer model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function computers()
+    {
+        return $this->hasMany(Computer::class);
+    }
+
+    /**
      * Relationship to RoomType model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
