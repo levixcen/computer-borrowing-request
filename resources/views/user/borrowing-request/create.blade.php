@@ -2,7 +2,7 @@
 
 @section('contents')
     <div class="bg-white w-full max-w-4xl m-auto p-4 flex flex-col items-center rounded sm:flex-row">
-        @include('component.user-navigation', ['title' => ''])
+        @include('components.user-navigation', ['title' => ''])
         <div class="flex-1 p-2 sm:border-l-2">
             <form class="p-4" action="{{ route('borrowing-requests.store') }}" method="POST">
                 @csrf

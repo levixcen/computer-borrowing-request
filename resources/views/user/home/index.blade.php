@@ -2,7 +2,7 @@
 
 @section('contents')
     <div class="bg-white w-full max-w-4xl m-auto p-4 flex flex-col items-center rounded sm:flex-row">
-        @include('component.user-navigation', ['title' => 'Home'])
+        @include('components.user-navigation', ['title' => 'Home'])
         <div class="flex-1 p-2 sm:border-l-2">
             @unless ($schedules->count() == 0)
                 @foreach ($schedules as $schedule)
