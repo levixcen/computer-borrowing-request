@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RoomStoreRequest;
+use App\Http\Requests\Admin\RoomUpdateRequest;
 use App\Models\Room;
 use App\Models\RoomType;
-use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
@@ -36,17 +37,17 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\RoomStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoomStoreRequest $request)
     {
         $room = new Room;
         $room->roomType()->associate($request->room_type);
         $room->fill($request->only(['name']));
         $room->save();
 
-        return redirect()->route('rooms.index');
+        return redirect()->route('admin.rooms.index');
     }
 
     /**
@@ -68,7 +69,7 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        return view('rooms.edit', [
+        return view('admin.room.edit', [
             'room' => $room,
             'roomTypes' => RoomType::all(),
         ]);
@@ -77,16 +78,16 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\RoomUpdateRequest  $request
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(RoomUpdateRequest $request, Room $room)
     {
         $room->roomType()->associate($request->room_type);
         $room->update($request->only(['name']));
 
-        return redirect()->route('rooms.index');
+        return redirect()->route('admin.rooms.index');
     }
 
     /**

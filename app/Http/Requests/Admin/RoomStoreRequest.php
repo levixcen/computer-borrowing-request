@@ -30,7 +30,7 @@ class RoomStoreRequest extends FormRequest
             ],
             'name' => [
                 'required',
-                'unique:room,name',
+                'unique:rooms,name',
             ],
         ];
     }

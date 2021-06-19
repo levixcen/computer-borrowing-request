@@ -24,10 +24,10 @@
                             <td class="p-2">{{ $room->name }}</td>
                             <td class="p-2">{{ $room->computers()->count() }}</td>
                             <th class="p-2 flex items-center justify-center">
-                                <a class="mx-2 text-blue-500 hover:text-blue-700" href="">
+                                <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.rooms.edit', ['room' => $room]) }}">
                                     <x-heroicon-s-pencil style="width: 25px;" />
                                 </a>
-                                <a class="mx-2 text-red-500 hover:text-red-700" href="">
+                                <a class="mx-2 text-red-500 hover:text-red-700" href="{{ route('admin.rooms.destroy', ['room' => $room]) }}" data-method="DELETE" data-form-_token="{{ csrf_token() }}">
                                     <x-heroicon-s-trash style="width: 25px;" />
                                 </a>
                             </th>

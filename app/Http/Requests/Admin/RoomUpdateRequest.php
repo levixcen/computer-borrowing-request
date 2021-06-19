@@ -30,7 +30,7 @@ class RoomUpdateRequest extends FormRequest
             ],
             'name' => [
                 'required',
-                'unique:room,name,' . $this->route('room')->id,
+                'unique:rooms,name,' . $this->route('room')->id,
             ],
         ];
     }
