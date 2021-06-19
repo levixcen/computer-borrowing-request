@@ -24,7 +24,14 @@ Route::resource('computers', ComputerController::class)
     ->except(['index', 'show']);
 
 Route::resource('borrowing-requests', BorrowingRequestController::class)
-    ->only(['index']);
+    ->only(['index', 'show', 'update']);
+
+//Route::group(['prefix' => 'borrowing-requests/{borrowing_request}', 'as' => 'borrowing-requests.'], function () {
+//
+//    Route::patch('/approve', [BorrowingRequestController::class, 'approve']);
+//    Route::patch('/reject', [BorrowingRequestController::class, 'reject']);
+//
+//});
 
 Route::resource('schedules', ScheduleController::class)
     ->only(['index', 'show']);

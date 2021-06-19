@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\BorrowingRequestUpdateRequest;
 use App\Models\BorrowingRequest;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class BorrowingRequestController extends Controller
      */
     public function index()
     {
-        return view('borrowing-request.index', [
+        return view('admin.borrowing-request.index', [
             'borrowingRequests' => BorrowingRequest::paginate(10),
         ]);
     }
@@ -49,7 +50,9 @@ class BorrowingRequestController extends Controller
      */
     public function show(BorrowingRequest $borrowingRequest)
     {
-        //
+        return view('admin.borrowing-request.show', [
+            'borrowingRequest' => $borrowingRequest,
+        ]);
     }
 
     /**
@@ -66,13 +69,19 @@ class BorrowingRequestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\BorrowingRequestUpdateRequest  $request
      * @param  \App\Models\BorrowingRequest  $borrowingRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BorrowingRequest $borrowingRequest)
+    public function update(BorrowingRequestUpdateRequest $request, BorrowingRequest $borrowingRequest)
     {
-        //
+        if (! empty($request->status) && $request->status === 'Reject') {
+            $borrowingRequest->update($request->only(['status', 'rejection_reason']));
+        } else {
+            $borrowingRequest->update($request->only(['status']));
+        }
+
+        return redirect()->route('admin.borrowing-requests.index');
     }
 
     /**
