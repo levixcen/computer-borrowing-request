@@ -69,8 +69,11 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
+        $computers = $room->computers()->paginate(7);
+
         return view('admin.room.edit', [
             'room' => $room,
+            'computers' => $computers,
             'roomTypes' => RoomType::all(),
         ]);
     }

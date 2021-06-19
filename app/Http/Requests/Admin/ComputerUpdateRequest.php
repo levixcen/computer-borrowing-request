@@ -26,7 +26,7 @@ class ComputerUpdateRequest extends FormRequest
         return [
             'room' => [
                 'required',
-                'exists:computers,id',
+                'exists:rooms,id',
             ],
             'hostname' => [
                 'required',

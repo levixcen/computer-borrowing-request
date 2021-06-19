@@ -18,20 +18,21 @@ class ComputerController extends Controller
      */
     public function index()
     {
-        return view('computer.index', [
-            'computers' => Computer::paginate(10),
-        ]);
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('computer.create', [
-            'rooms' => Room::all(),
+        $room = Room::find($request->room);
+
+        return view('admin.computer.create', [
+            'room' => $room,
         ]);
     }
 
@@ -48,7 +49,7 @@ class ComputerController extends Controller
         $computer->fill($request->only(['hostname', 'ip_address']));
         $computer->save();
 
-        return redirect()->route('computers.index');
+        return redirect()->route('admin.rooms.edit', ['room' => $request->room]);
     }
 
     /**
@@ -70,9 +71,8 @@ class ComputerController extends Controller
      */
     public function edit(Computer $computer)
     {
-        return view('computer.edit', [
+        return view('admin.computer.edit', [
             'computer' => $computer,
-            'rooms' => Room::all(),
         ]);
     }
 
@@ -88,7 +88,9 @@ class ComputerController extends Controller
         $computer->room()->associate($request->room);
         $computer->update($request->only(['hostname', 'ip_address']));
 
-        return redirect()->route('computers.index');
+        $room = Room::find($request->room);
+
+        return redirect()->route('admin.rooms.edit', ['room' => $room]);
     }
 
     /**

@@ -21,9 +21,9 @@
                 <tbody class="text-center">
                     @foreach ($rooms as $room)
                         <tr class="bg-gray-200">
-                            <td class="p-2">{{ $room->name }}</td>
-                            <td class="p-2">{{ $room->computers()->count() }}</td>
-                            <th class="p-2 flex items-center justify-center">
+                            <td>{{ $room->name }}</td>
+                            <td>{{ $room->computers()->count() }}</td>
+                            <th class="flex items-center justify-center">
                                 <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.rooms.edit', ['room' => $room]) }}">
                                     <x-heroicon-s-pencil style="width: 25px;" />
                                 </a>

@@ -21,7 +21,7 @@ Route::resource('rooms', RoomController::class)
     ->except(['show']);
 
 Route::resource('computers', ComputerController::class)
-    ->except(['show']);
+    ->except(['index', 'show']);
 
 Route::resource('borrowing-requests', BorrowingRequestController::class)
     ->only(['index']);

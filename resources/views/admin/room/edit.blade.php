@@ -41,5 +41,41 @@
                 </div>
             </form>
         </div>
+        <div class="w-full max-w-3xl rounded container mx-auto mt-4 p-3 bg-white shadow-md">
+            <div>
+                <span class="font-bold text-xl mr-2">Computer Management</span>
+                <a class="btn bg-green-500 text-white p-2 rounded hover:bg-green-700" href="{{ route('admin.computers.create', ['room' => $room]) }}">
+                    <x-heroicon-s-plus style="width: 20px; display: inline-block" /> Add New Computer
+                </a>
+            </div>
+            <div>
+                <table class="w-full border mt-4 shadow-md">
+                    <thead>
+                    <tr>
+                        <th class="p-2">Hostname</th>
+                        <th class="p-2">IP Address</th>
+                        <th class="w-36">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    @foreach ($computers as $computer)
+                        <tr class="bg-gray-200">
+                            <td>{{ $computer->hostname }}</td>
+                            <td>{{ $computer->ip_address }}</td>
+                            <th class="flex items-center justify-center">
+                                <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.computers.edit', ['computer' => $computer]) }}">
+                                    <x-heroicon-s-pencil style="width: 25px;" />
+                                </a>
+                                <a class="mx-2 text-red-500 hover:text-red-700" href="{{ route('admin.computers.destroy', ['computer' => $computer]) }}" data-method="DELETE" data-form-_token="{{ csrf_token() }}">
+                                    <x-heroicon-s-trash style="width: 25px;" />
+                                </a>
+                            </th>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                {{ $computers->links() }}
+            </div>
+        </div>
     </div>
 @endsection
