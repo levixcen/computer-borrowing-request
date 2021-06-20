@@ -23,46 +23,55 @@
                 <div>
                     Reason: {{ $borrowingRequest->reason }}
                 </div>
+                @unless (empty($borrowingRequest->status))
+                    <div>
+                        Status: {{ $borrowingRequest->status }}
+                    </div>
+                    <div>
+                        Rejection Reason: {{ $borrowingRequest->rejection_reason ?? '-' }}
+                    </div>
+                @endunless
             </div>
         </div>
-        <div class="container w-full max-w-3xl bg-white rounded mx-auto mt-4 p-3 shadow-md">
-            <div>
-                <span class="font-bold text-xl">Change Status</span>
-            </div>
-            <form class="mt-4" action="{{ route('admin.borrowing-requests.update', ['borrowing_request' => $borrowingRequest]) }}" method="POST">
-                @csrf
-                @method('PATCH')
-
+        @if (empty($borrowingRequest->status))
+            <div class="container w-full max-w-3xl bg-white rounded mx-auto mt-4 p-3 shadow-md">
                 <div>
-                    <label class="font-bold block text-gray-700 my-2" for="status">
-                        Status
-                    </label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('status') border-red-500 @enderror focus:outline-none focus:ring" name="status" id="status">
-                        <option value="">-- Choose One --</option>
-                        <option value="Accept" @if ((old('status') ?? '') === 'Accept') selected @endif>Approve</option>
-                        <option value="Reject" @if ((old('status') ?? '') === 'Reject') selected @endif>Reject</option>
-                    </select>
-                    @error('status')
-                        <span class="text-red-500">{{ $errors->first('status') }}</span>
-                    @enderror
+                    <span class="font-bold text-xl">Change Status</span>
                 </div>
-                <div id="rejection-reason-container">
-                    <label class="font-bold block text-gray-700 my-2" for="rejection-reason">
-                        Rejection Reason
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('rejection_reason') border-red-500 @enderror focus:outline-none focus:ring" id="rejection-reason" name="rejection_reason" type="text" placeholder="Rejection Reason" value="{{ old('rejection_reason') ?? '' }}">
-                    @error('rejection_reason')
-                        <span class="text-red-500">{{ $errors->first('rejection_reason') }}</span>
-                    @enderror
-                </div>
-                <div class="mt-4">
-                    <button class="btn bg-green-500 text-white p-2 hover:bg-green-700" type="submit">
-                        Update Status
-                    </button>
-                </div>
-            </form>
-        </div>
+                <form class="mt-4" action="{{ route('admin.borrowing-requests.update', ['borrowing_request' => $borrowingRequest]) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
 
+                    <div>
+                        <label class="font-bold block text-gray-700 my-2" for="status">
+                            Status
+                        </label>
+                        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('status') border-red-500 @enderror focus:outline-none focus:ring" name="status" id="status">
+                            <option value="">-- Choose One --</option>
+                            <option value="Accept" @if ((old('status') ?? '') === 'Accept') selected @endif>Approve</option>
+                            <option value="Reject" @if ((old('status') ?? '') === 'Reject') selected @endif>Reject</option>
+                        </select>
+                        @error('status')
+                            <span class="text-red-500">{{ $errors->first('status') }}</span>
+                        @enderror
+                    </div>
+                    <div id="rejection-reason-container">
+                        <label class="font-bold block text-gray-700 my-2" for="rejection-reason">
+                            Rejection Reason
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('rejection_reason') border-red-500 @enderror focus:outline-none focus:ring" id="rejection-reason" name="rejection_reason" type="text" placeholder="Rejection Reason" value="{{ old('rejection_reason') ?? '' }}">
+                        @error('rejection_reason')
+                            <span class="text-red-500">{{ $errors->first('rejection_reason') }}</span>
+                        @enderror
+                    </div>
+                    <div class="mt-4">
+                        <button class="btn bg-green-500 text-white p-2 hover:bg-green-700" type="submit">
+                            Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        @endunless
     </div>
 @endsection
 

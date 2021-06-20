@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Dtos\BorrowingRequestApprovedConstructorDto;
+use App\Events\BorrowingRequestApproved;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BorrowingRequestUpdateRequest;
 use App\Models\BorrowingRequest;
@@ -80,6 +82,8 @@ class BorrowingRequestController extends Controller
         } else {
             $borrowingRequest->update($request->only(['status']));
         }
+
+        BorrowingRequestApproved::dispatch(new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest));
 
         return redirect()->route('admin.borrowing-requests.index');
     }
