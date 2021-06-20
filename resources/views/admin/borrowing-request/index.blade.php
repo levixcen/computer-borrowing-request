@@ -18,10 +18,10 @@
                 </thead>
                 <tbody class="text-center">
                 @foreach ($borrowingRequests as $borrowingRequest)
-                    <tr class="bg-gray-200">
+                    <tr class="@if (empty($borrowingRequest->status)) bg-gray-200 @elseif ($borrowingRequest->status === 'Accept') bg-green-200 @else bg-red-200 @endif">
                         <td>{{ $borrowingRequest->created_at }}</td>
                         <td>{{ $borrowingRequest->user->email }}</td>
-                        <td>{{ $borrowingRequest->status ?? 'Waiting for Approval' }}</td>
+                        <td>@if (empty($borrowingRequest->status)) Waiting for Approval @elseif ($borrowingRequest->status === 'Accept') Approved @else Rejected @endif</td>
                         <th class="flex items-center justify-center">
                             <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.borrowing-requests.show', ['borrowing_request' => $borrowingRequest]) }}">
                                 <x-heroicon-s-clipboard-list style="width: 25px;" />
