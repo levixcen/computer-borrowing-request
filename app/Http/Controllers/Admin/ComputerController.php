@@ -105,4 +105,21 @@ class ComputerController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     */
+    public function ajaxIndex(Request $request)
+    {
+        if (empty($request->room)) {
+            return response()->json(Computer::all());
+        }
+
+        $computers = Computer::where('room_id', $request->room)
+            ->get();
+
+        return response()->json($computers);
+    }
 }

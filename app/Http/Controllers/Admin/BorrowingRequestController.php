@@ -7,6 +7,8 @@ use App\Events\BorrowingRequestApproved;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BorrowingRequestUpdateRequest;
 use App\Models\BorrowingRequest;
+use App\Models\Computer;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class BorrowingRequestController extends Controller
@@ -54,6 +56,7 @@ class BorrowingRequestController extends Controller
     {
         return view('admin.borrowing-request.show', [
             'borrowingRequest' => $borrowingRequest,
+            'rooms' => Room::all(),
         ]);
     }
 
@@ -83,7 +86,18 @@ class BorrowingRequestController extends Controller
             $borrowingRequest->update($request->only(['status']));
         }
 
-        BorrowingRequestApproved::dispatch(new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest));
+        if (! empty($request->room) && ! empty($request->computer)) {
+            $room = Room::find($request->room);
+            $computer = Computer::find($request->computer);
+            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest, $room, $computer);
+        } else if (! empty($request->room)) {
+            $room = Room::find($request->room);
+            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest, $room);
+        } else {
+            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest);
+        }
+
+        BorrowingRequestApproved::dispatch($dto);
 
         return redirect()->route('admin.borrowing-requests.index');
     }

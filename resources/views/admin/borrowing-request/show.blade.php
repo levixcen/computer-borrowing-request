@@ -25,7 +25,7 @@
                 </div>
                 @unless (empty($borrowingRequest->status))
                     <div>
-                        Status: {{ $borrowingRequest->status }}
+                        Status: @if ($borrowingRequest->status === 'Accept') <span class="text-green-500">Approved</span> @else <span class="text-red-500">Rejected</span> @endif
                     </div>
                     <div>
                         Rejection Reason: {{ $borrowingRequest->rejection_reason ?? '-' }}
@@ -54,6 +54,49 @@
                         @error('status')
                             <span class="text-red-500">{{ $errors->first('status') }}</span>
                         @enderror
+                    </div>
+                    <div id="computer-allocation-container">
+                        <label class="font-bold block text-gray-700 my-2" for="computer-allocation">
+                            Computer Allocation
+                        </label>
+                        <div>
+                            <input type="radio" name="computer_allocation" id="computer-allocation-auto-allocate" value="Auto-allocate computer" @if ((old('computer_allocation') ?? '') === 'auto_allocate') checked @endif>
+                            <label for="computer-allocation-auto-allocate">Auto-allocate computer</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="computer_allocation" id="computer-allocation-manual-allocate" value="Allocate computer manually" @if ((old('computer_allocation') ?? '') === 'manual_allocate') checked @endif>
+                            <label for="computer-allocation-manual-allocate">Allocate computer manually</label>
+                        </div>
+                        @error('computer_allocation')
+                            <span class="text-red-500">{{ $errors->first('computer_allocation') }}</span>
+                        @enderror
+                    </div>
+                    <div id="room-computer-container" class="flex flex-row">
+                        <div class="flex-1 mr-2">
+                            <label class="font-bold block text-gray-700 my-2" for="room">
+                                Room
+                            </label>
+                            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('room') border-red-500 @enderror focus:outline-none focus:ring" name="room" id="room">
+                                <option value="">-- Choose One --</option>
+                                @foreach ($rooms as $room)
+                                    <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('room')
+                                <span class="text-red-500">{{ $errors->first('room') }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex-1 ml-2">
+                            <label class="font-bold block text-gray-700 my-2" for="computer">
+                                Computer
+                            </label>
+                            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('computer') border-red-500 @enderror focus:outline-none focus:ring" name="computer" id="computer">
+                                <option value="">-- Choose One --</option>
+                            </select>
+                            @error('computer')
+                                <span class="text-red-500">{{ $errors->first('computer') }}</span>
+                            @enderror
+                        </div>
                     </div>
                     <div id="rejection-reason-container">
                         <label class="font-bold block text-gray-700 my-2" for="rejection-reason">
@@ -85,13 +128,64 @@
             }
         };
 
+        const changeComputerAllocationContainerState = (value) => {
+            if (value === 'Accept') {
+                document.getElementById('computer-allocation-container').classList.remove('hidden');
+
+                const radioButtons = document.getElementsByName('computer_allocation');
+                radioButtons.forEach((item) => {
+                    if (item.checked) {
+                        changeRoomAndComputerContainerState(item.value);
+                    }
+                });
+            } else {
+                document.getElementById('computer-allocation-container').classList.add('hidden');
+                document.getElementById('room-computer-container').classList.add('hidden');
+            }
+        };
+
+        const changeRoomAndComputerContainerState = (value) => {
+            if (value === 'Allocate computer manually') {
+                document.getElementById('room-computer-container').classList.remove('hidden');
+            } else {
+                document.getElementById('room-computer-container').classList.add('hidden');
+            }
+        }
+
+        const changeComputerContents = (value) => {
+            let url = "{{ route('admin.ajax.computers.index', ['room' => '_room_']) }}";
+            url = url.replace('_room_', value);
+
+            fetch(url)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data)
+                });
+        };
+
         const onStatusChanged = (e) => {
             changeRejectionReasonContainerState(e.currentTarget.value);
+            changeComputerAllocationContainerState(e.currentTarget.value);
+        };
+
+        const onComputerAllocationChanged = (e) => {
+            changeRoomAndComputerContainerState(e.currentTarget.value);
+        };
+
+        const onRoomChanged = (e) => {
+            changeComputerContents(e.currentTarget.value);
         };
 
         const onDocumentReady = () => {
             changeRejectionReasonContainerState("{{ old('status') ?? '' }}");
+            changeComputerAllocationContainerState("{{ old('status') ?? '' }}");
+            changeRoomAndComputerContainerState("{{ old('computer_allocation') ?? '' }}");
+
             document.getElementById('status').onchange = onStatusChanged;
+            document.getElementById('room').onchange = onRoomChanged;
+            document.getElementsByName('computer_allocation').forEach((item) => {
+                item.onchange = onComputerAllocationChanged;
+            });
         };
 
         document.addEventListener('DOMContentLoaded', onDocumentReady);

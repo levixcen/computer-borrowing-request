@@ -28,6 +28,20 @@ class BorrowingRequestUpdateRequest extends FormRequest
                 'required',
                 'in:Accept,Reject',
             ],
+            'computer_allocation' => [
+                'required_if:status,Accept',
+                'in:Auto-allocate computer,Allocate computer manually',
+            ],
+            'room' => [
+                'exclude_if:computer_allocation,Auto-allocate computer',
+                'required_if:computer_allocation,Allocate computer manually',
+                'exists:rooms,id',
+            ],
+            'computer' => [
+                'exclude_if:computer_allocation,Auto-allocate computer',
+                'required_if:computer_allocation,Allocate computer manually',
+                'exists:computers,id',
+            ],
             'rejection_reason' => [
                 'required_if:status,Reject',
             ],

@@ -26,12 +26,12 @@ Route::resource('computers', ComputerController::class)
 Route::resource('borrowing-requests', BorrowingRequestController::class)
     ->only(['index', 'show', 'update']);
 
-//Route::group(['prefix' => 'borrowing-requests/{borrowing_request}', 'as' => 'borrowing-requests.'], function () {
-//
-//    Route::patch('/approve', [BorrowingRequestController::class, 'approve']);
-//    Route::patch('/reject', [BorrowingRequestController::class, 'reject']);
-//
-//});
-
 Route::resource('schedules', ScheduleController::class)
     ->only(['index', 'show']);
+
+Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function () {
+
+    Route::get('/computers', [\App\Http\Controllers\Admin\ComputerController::class, 'ajaxIndex'])
+        ->name('computers.index');
+
+});
