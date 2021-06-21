@@ -5,7 +5,7 @@
         @include('components.admin-header')
         <div class="container w-full max-w-3xl bg-white rounded mx-auto mt-4 p-3 shadow-md">
             <div>
-                <span class="font-bold text-xl">Borrowing Request Management</span>
+                <span class="font-bold text-xl">Schedule Management</span>
             </div>
             <table class="w-full border mt-4 shadow-md">
                 <thead>

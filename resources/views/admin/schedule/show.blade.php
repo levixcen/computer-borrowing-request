@@ -9,7 +9,7 @@
         </div>
         <div class="container w-full max-w-3xl bg-white rounded mx-auto mt-4 p-3 shadow-md">
             <div>
-                <span class="font-bold text-xl">Borrowing Request - {{ $schedule->borrowingRequest->id }}</span>
+                <span class="font-bold text-xl">Schedule - {{ $schedule->id }}</span>
             </div>
             <div class="mt-4">
                 <div>
