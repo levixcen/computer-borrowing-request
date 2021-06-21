@@ -22,27 +22,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
-                        <td class="p-2">2021-08-02</td>
-                        <td class="p-2">Begitu</td>
-                        <td class="p-2">2021-08-02 14:00</td>
-                        <td class="p-2">2021-08-02 15:00</td>
-                        <td class="p-2">Accepted</td>
-                    </tr>
-                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
-                        <td class="p-2">2021-08-02</td>
-                        <td class="p-2">Begitu</td>
-                        <td class="p-2">2021-08-02 14:00</td>
-                        <td class="p-2">2021-08-02 15:00</td>
-                        <td class="p-2">Rejected</td>
-                    </tr>
-                    <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
-                        <td class="p-2">2021-08-02</td>
-                        <td class="p-2">Begitu</td>
-                        <td class="p-2">2021-08-02 14:00</td>
-                        <td class="p-2">2021-08-02 15:00</td>
-                        <td class="p-2">Accepted</td>
-                    </tr>
+                    @foreach ($borrowingRequests as $borrowingRequest)
+                        <tr class="bg-gray-200 cursor-pointer hover:bg-gray-100">
+                            <td class="p-2">{{ $borrowingRequest->created_at->format('d M Y H:i') }}</td>
+                            <td class="p-2">{{ $borrowingRequest->reason }}</td>
+                            <td class="p-2">{{ $borrowingRequest->start_datetime->format('d M Y H:i') }}</td>
+                            <td class="p-2">{{ $borrowingRequest->end_datetime->format('d M Y H:i') }}</td>
+                            <td class="p-2">{{ $borrowingRequest->status }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

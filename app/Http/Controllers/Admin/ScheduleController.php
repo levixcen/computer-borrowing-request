@@ -16,7 +16,7 @@ class ScheduleController extends Controller
     public function index()
     {
         return view('admin.schedule.index', [
-            'schedules' => Schedule::query()->paginate(10),
+            'schedules' => Schedule::orderByDesc('start_datetime')->paginate(10),
         ]);
     }
 

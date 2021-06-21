@@ -14,10 +14,10 @@ class BorrowingRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('user.borrowing-request.index', [
-            'borrowingRequests' => BorrowingRequest::orderByDesc('created_at')->paginate(10),
+            'borrowingRequests' => BorrowingRequest::where('user_id', $request->user()->id)->orderByDesc('created_at')->paginate(10),
         ]);
     }
 

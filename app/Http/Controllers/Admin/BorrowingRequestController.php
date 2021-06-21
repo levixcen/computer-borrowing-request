@@ -89,12 +89,12 @@ class BorrowingRequestController extends Controller
         if (! empty($request->room) && ! empty($request->computer)) {
             $room = Room::find($request->room);
             $computer = Computer::find($request->computer);
-            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest, $room, $computer);
+            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest, $room, $computer);
         } else if (! empty($request->room)) {
             $room = Room::find($request->room);
-            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest, $room);
+            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest, $room);
         } else {
-            $dto = new BorrowingRequestApprovedConstructorDto($request->user(), $borrowingRequest);
+            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest);
         }
 
         BorrowingRequestApproved::dispatch($dto);
