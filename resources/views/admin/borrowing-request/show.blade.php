@@ -152,15 +152,25 @@
             }
         }
 
-        const changeComputerContents = (value) => {
+        const changeComputerContents = (data) => {
+            let printed = "<option value=\"\">-- Choose One --</option>";
+            let template = "<option value=\"_computer.id_\">_computer.hostname_</option>";
+
+            data.forEach((item) => {
+                const currentOption = template.replace('_computer.id_', item.id).replace('_computer.hostname_', item.hostname);
+                printed += currentOption;
+            });
+
+            document.getElementById('computer').innerHTML = printed;
+        };
+
+        const fetchRoomComputers = async (value) => {
             let url = "{{ route('admin.ajax.computers.index', ['room' => '_room_']) }}";
             url = url.replace('_room_', value);
 
             fetch(url)
                 .then(response => response.json())
-                .then((data) => {
-                    console.log(data)
-                });
+                .then(changeComputerContents);
         };
 
         const onStatusChanged = (e) => {
@@ -173,7 +183,7 @@
         };
 
         const onRoomChanged = (e) => {
-            changeComputerContents(e.currentTarget.value);
+            fetchRoomComputers(e.currentTarget.value);
         };
 
         const onDocumentReady = () => {
