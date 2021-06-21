@@ -9,16 +9,16 @@
             </div>
             <div class="mt-4">
                 <div>
-                    Email Requestor: {{ $borrowingRequest->user->email }}
+                    Request Creator Email: {{ $borrowingRequest->user->email }}
                 </div>
                 <div>
-                    Request At: {{ $borrowingRequest->created_at }}
+                    Request At: {{ $borrowingRequest->created_at->format('d M Y H:i') }}
                 </div>
                 <div>
-                    Start Time: {{ $borrowingRequest->start_datetime }}
+                    Start Time: {{ $borrowingRequest->start_datetime->format('d M Y H:i') }}
                 </div>
                 <div>
-                    End Time: {{ $borrowingRequest->end_datetime }}
+                    End Time: {{ $borrowingRequest->end_datetime->format('d M Y H:i') }}
                 </div>
                 <div>
                     Reason: {{ $borrowingRequest->reason }}

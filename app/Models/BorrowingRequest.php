@@ -25,6 +25,16 @@ class BorrowingRequest extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_datetime' => 'datetime:Y-m-d H:i',
+        'end_datetime' => 'datetime:Y-m-d H:i',
+    ];
+
+    /**
      * Local scope for get unchecked borrowing requests.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

@@ -13,7 +13,7 @@
             </div>
             <div class="mt-4">
                 <div>
-                    Email Requestor: {{ $schedule->user->email }}
+                    Request Creator Email: {{ $schedule->user->email }}
                 </div>
                 <div>
                     Request At: {{ $schedule->borrowingRequest->created_at->format('d M Y H:i') }}

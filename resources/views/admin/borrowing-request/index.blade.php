@@ -11,7 +11,7 @@
                 <thead>
                 <tr>
                     <th class="p-2">Requested At</th>
-                    <th class="p-2">Email Requestor</th>
+                    <th class="p-2">Request Creator Email</th>
                     <th class="p-2">Status</th>
                     <th class="w-36 p-2">Action</th>
                 </tr>
