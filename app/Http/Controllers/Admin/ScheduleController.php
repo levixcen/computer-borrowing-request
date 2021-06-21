@@ -15,8 +15,8 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return view('schedule.index', [
-            'schedules' => Schedule::all(),
+        return view('admin.schedule.index', [
+            'schedules' => Schedule::query()->paginate(10),
         ]);
     }
 
@@ -49,7 +49,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        return view('schedule.show', [
+        return view('admin.schedule.show', [
             'schedule' => $schedule,
         ]);
     }
