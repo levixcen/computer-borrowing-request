@@ -32,6 +32,15 @@
                         <span class="text-red-500">{{ $errors->first('ip_address') }}</span>
                     @enderror
                 </div>
+                <div class="mt-4">
+                    <input class="shadow py-2 px-3 text-gray-700 @error('available') border-red-500 @enderror focus:outline-none focus:ring" id="available" name="available" type="checkbox" @if ((old('available') ?? $computer->available) === 1) checked @endif>
+                    <label class="my-2" for="available">
+                        Available for Borrowing
+                    </label>
+                    @error('available')
+                        <span class="text-red-500">{{ $errors->first('available') }}</span>
+                    @enderror
+                </div>
                 <div class="mt-3">
                     <button class="btn bg-green-500 p-2 text-white rounded hover:bg-green-700" type="submit">
                         Update

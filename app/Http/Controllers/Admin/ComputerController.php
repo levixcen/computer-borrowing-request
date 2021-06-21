@@ -85,8 +85,11 @@ class ComputerController extends Controller
      */
     public function update(ComputerUpdateRequest $request, Computer $computer)
     {
+        $data = $request->only(['hostname', 'ip_address']);
+        $data['available'] = $request->has('available') && $request->available === 'on';
+
         $computer->room()->associate($request->room);
-        $computer->update($request->only(['hostname', 'ip_address']));
+        $computer->update($data);
 
         $room = Room::find($request->room);
 
@@ -118,6 +121,7 @@ class ComputerController extends Controller
         }
 
         $computers = Computer::where('room_id', $request->room)
+            ->availableForBorrowing()
             ->get();
 
         return response()->json($computers);

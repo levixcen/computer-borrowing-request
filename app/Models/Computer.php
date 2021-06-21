@@ -20,7 +20,22 @@ class Computer extends Model
     protected $fillable = [
         'hostname',
         'ip_address',
+        'available',
     ];
+
+    /**
+     * Local scope for get available borrowing computer.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder    $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAvailableForBorrowing($query)
+    {
+        return $query->where('available', 1)
+            ->whereHas('room', function (Builder $query) {
+                $query->where('available', 1);
+            });
+    }
 
     /**
      * Local scope for get available computer on current schedule.
@@ -42,12 +57,13 @@ class Computer extends Model
             $query->where('id', $computer->id);
         }
 
-        return $query->whereDoesntHave('schedules', function (Builder $query) use ($start_datetime, $end_datetime) {
-            $query->where([
-                ['start_datetime', '<', $end_datetime],
-                ['end_datetime', '>', $start_datetime],
-            ]);
-        });
+        return $query->availableForBorrowing()
+            ->whereDoesntHave('schedules', function (Builder $query) use ($start_datetime, $end_datetime) {
+                $query->where([
+                    ['start_datetime', '<', $end_datetime],
+                    ['end_datetime', '>', $start_datetime],
+                ]);
+            });
     }
 
     /**

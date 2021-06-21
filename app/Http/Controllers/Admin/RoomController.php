@@ -87,10 +87,13 @@ class RoomController extends Controller
      */
     public function update(RoomUpdateRequest $request, Room $room)
     {
-        $room->roomType()->associate($request->room_type);
-        $room->update($request->only(['name']));
+        $data = $request->only(['name']);
+        $data['available'] = $request->has('available') && $request->available === "on";
 
-        return redirect()->route('admin.rooms.index');
+        $room->roomType()->associate($request->room_type);
+        $room->update($data);
+
+        return redirect()->back();
     }
 
     /**
