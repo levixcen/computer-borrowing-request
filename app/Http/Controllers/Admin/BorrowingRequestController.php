@@ -21,7 +21,7 @@ class BorrowingRequestController extends Controller
     public function index()
     {
         return view('admin.borrowing-request.index', [
-            'borrowingRequests' => BorrowingRequest::paginate(10),
+            'borrowingRequests' => BorrowingRequest::orderByDesc('created_at')->paginate(10),
         ]);
     }
 
