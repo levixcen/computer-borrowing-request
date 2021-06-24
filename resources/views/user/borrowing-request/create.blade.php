@@ -11,7 +11,7 @@
                     <label class="font-bold block text-gray-700 my-2" for="date-use">
                         Date
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('date_use') border-red-500 @enderror focus:outline-none focus:ring" type="date" name="date_use" id="date-use">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('date_use') border-red-500 @enderror focus:outline-none focus:ring" type="date" name="date_use" id="date-use" value="{{ old('date_use') ?? '' }}">
                     @error('date_use')
                         <span class="text-red-500">{{ $errors->first('date_use') }}</span>
                     @enderror
@@ -21,7 +21,7 @@
                         <label class="font-bold block text-gray-700 my-2" for="start-time">
                             Start Time
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('start_time') border-red-500 @enderror focus:outline-none focus:ring" type="time" name="start_time" id="start-time">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('start_time') border-red-500 @enderror focus:outline-none focus:ring" type="time" name="start_time" id="start-time" value="{{ old('start_time') ?? '' }}">
                         @error('start_time')
                             <span class="text-red-500">{{ $errors->first('start_time') }}</span>
                         @enderror
@@ -30,7 +30,7 @@
                         <label class="font-bold block text-gray-700 my-2" for="end-time">
                             End Time
                         </label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('end_time') border-red-500 @enderror focus:outline-none focus:ring" type="time" name="end_time" id="end-time">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('end_time') border-red-500 @enderror focus:outline-none focus:ring" type="time" name="end_time" id="end-time" value="{{ old('end_time') ?? '' }}">
                         @error('end_time')
                             <span class="text-red-500">{{ $errors->first('end_time') }}</span>
                         @enderror
@@ -40,7 +40,7 @@
                     <label class="font-bold block text-gray-700 my-2" for="reason">
                         Reason
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('reason') border-red-500 @enderror focus:outline-none focus:ring" type="text" name="reason" id="reason">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('reason') border-red-500 @enderror focus:outline-none focus:ring" type="text" name="reason" id="reason" value="{{ old('reason') ?? '' }}">
                     @error('reason')
                         <span class="text-red-500">{{ $errors->first('reason') }}</span>
                     @enderror

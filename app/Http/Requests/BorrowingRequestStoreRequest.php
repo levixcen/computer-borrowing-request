@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinOperationalHours;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BorrowingRequestStoreRequest extends FormRequest
@@ -27,15 +28,18 @@ class BorrowingRequestStoreRequest extends FormRequest
             'date_use' => [
                 'required',
                 'date',
+                'after:+1 day',
             ],
             'start_time' => [
                 'required',
                 'date_format:H:i',
+                new WithinOperationalHours,
             ],
             'end_time' => [
                 'required',
                 'date_format:H:i',
                 'after:start_time',
+                new WithinOperationalHours,
             ],
             'reason' => [
                 'required',
