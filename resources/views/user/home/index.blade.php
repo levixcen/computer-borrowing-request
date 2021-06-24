@@ -6,8 +6,8 @@
         <div class="flex-1 p-2 sm:border-l-2">
             @unless ($schedules->count() == 0)
                 @foreach ($schedules as $schedule)
-                    <div class="w-full p-4 flex cursor-pointer items-center hover:bg-gray-300">
-                        <a href="{{ route('schedules.show', ['schedule' => $schedule]) }}">
+                    <div class="w-full p-4 cursor-pointer items-center hover:bg-gray-300">
+                        <a href="{{ route('schedules.show', ['schedule' => $schedule]) }}" class="flex">
                             <div class="pr-4">
                                 <x-heroicon-s-desktop-computer />
                             </div>
