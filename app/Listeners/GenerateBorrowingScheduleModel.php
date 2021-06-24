@@ -46,33 +46,6 @@ class GenerateBorrowingScheduleModel
         $room = $event->room;
         $computer = $event->computer;
 
-        if (empty($event->room) && empty($event->computer)) {
-            $computer = Computer::available($event->borrowingRequest->start_datetime, $event->borrowingRequest->end_datetime)
-                ->first();
-            $room = $computer->room;
-        } else if (empty($event->computer)) {
-            $computer = Computer::available($event->borrowingRequest->start_datetime, $event->borrowingRequest->end_datetime, $room)
-                ->first();
-        } else {
-            $computer = Computer::available($event->borrowingRequest->start_datetime, $event->borrowingRequest->end_datetime, $room, $computer)
-                ->first();
-        }
-
-        if (empty($computer)) {
-            $message = 'No available computers left from ' . $event->borrowingRequest->start_datetime . ' to ' . $event->borrowingRequest->end_datetime;
-
-            if (! empty($room)) {
-                $message .= ' in ' . $room->name;
-            }
-
-            if (! empty($computer)) {
-                $message .= ', computer ' . $computer->hostname;
-            }
-
-            Log::error($message);
-            throw new ErrorException($message);
-        }
-
         $schedule = new Schedule;
         $schedule->borrowingRequest()->associate($event->borrowingRequest);
         $schedule->user()->associate($event->user);

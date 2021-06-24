@@ -60,11 +60,11 @@
                             Computer Allocation
                         </label>
                         <div>
-                            <input type="radio" name="computer_allocation" id="computer-allocation-auto-allocate" value="Auto-allocate computer" @if ((old('computer_allocation') ?? '') === 'auto_allocate') checked @endif>
+                            <input type="radio" name="computer_allocation" id="computer-allocation-auto-allocate" value="Auto-allocate computer" @if ((old('computer_allocation') ?? '') === 'Auto-allocate computer') checked @endif>
                             <label for="computer-allocation-auto-allocate">Auto-allocate computer</label>
                         </div>
                         <div>
-                            <input type="radio" name="computer_allocation" id="computer-allocation-manual-allocate" value="Allocate computer manually" @if ((old('computer_allocation') ?? '') === 'manual_allocate') checked @endif>
+                            <input type="radio" name="computer_allocation" id="computer-allocation-manual-allocate" value="Allocate computer manually" @if ((old('computer_allocation') ?? '') === 'Allocate computer manually') checked @endif>
                             <label for="computer-allocation-manual-allocate">Allocate computer manually</label>
                         </div>
                         @error('computer_allocation')
@@ -79,7 +79,7 @@
                             <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('room') border-red-500 @enderror focus:outline-none focus:ring" name="room" id="room">
                                 <option value="">-- Choose One --</option>
                                 @foreach ($rooms as $room)
-                                    <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                    <option value="{{ $room->id }}" @if ((old('room') ?? '') === $room->id) selected @endif>{{ $room->name }}</option>
                                 @endforeach
                             </select>
                             @error('room')
@@ -93,9 +93,11 @@
                             <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('computer') border-red-500 @enderror focus:outline-none focus:ring" name="computer" id="computer">
                                 <option value="">-- Choose One --</option>
                             </select>
-                            @error('computer')
-                                <span class="text-red-500">{{ $errors->first('computer') }}</span>
-                            @enderror
+                            <div id="computer-error-message-container">
+                                @error('computer')
+                                    <span class="text-red-500">{{ $errors->first('computer') }}</span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div id="rejection-reason-container">
@@ -107,6 +109,9 @@
                             <span class="text-red-500">{{ $errors->first('rejection_reason') }}</span>
                         @enderror
                     </div>
+                    @error('available_computer')
+                        <span class="text-red-500">{{ $errors->first('available_computer') }}</span>
+                    @enderror
                     <div class="mt-4">
                         <button class="btn bg-green-500 text-white p-2 hover:bg-green-700" type="submit">
                             Update Status
@@ -120,6 +125,8 @@
 
 @push('scripts')
     <script>
+        let beginning = true;
+
         const changeRejectionReasonContainerState = (value) => {
             if (value === 'Reject') {
                 document.getElementById('rejection-reason-container').classList.remove('hidden');
@@ -156,6 +163,16 @@
             let printed = "<option value=\"\">-- Choose One --</option>";
             let template = "<option value=\"_computer.id_\">_computer.hostname_</option>";
 
+            if (data.length === 0) {
+                document.getElementById('computer').classList.add('border-red-500');
+                document.getElementById('computer-error-message-container').innerHTML = '<span class="text-red-500">No computers available for borrowing.</span>'
+            } else if (!beginning) {
+                document.getElementById('computer').classList.remove('border-red-500');
+                document.getElementById('computer-error-message-container').innerHTML = '';
+            } else {
+                beginning = !beginning;
+            }
+
             data.forEach((item) => {
                 const currentOption = template.replace('_computer.id_', item.id).replace('_computer.hostname_', item.hostname);
                 printed += currentOption;
@@ -165,6 +182,10 @@
         };
 
         const fetchRoomComputers = async (value) => {
+            if (value === '') {
+                return;
+            }
+
             let url = "{{ route('admin.ajax.computers.index', ['room' => '_room_']) }}";
             url = url.replace('_room_', value);
 
@@ -190,6 +211,8 @@
             changeRejectionReasonContainerState("{{ old('status') ?? '' }}");
             changeComputerAllocationContainerState("{{ old('status') ?? '' }}");
             changeRoomAndComputerContainerState("{{ old('computer_allocation') ?? '' }}");
+
+            fetchRoomComputers(document.getElementById('room').value);
 
             document.getElementById('status').onchange = onStatusChanged;
             document.getElementById('room').onchange = onRoomChanged;

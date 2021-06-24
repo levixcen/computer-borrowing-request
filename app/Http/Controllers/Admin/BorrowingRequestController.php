@@ -10,6 +10,7 @@ use App\Models\BorrowingRequest;
 use App\Models\Computer;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BorrowingRequestController extends Controller
 {
@@ -80,24 +81,46 @@ class BorrowingRequestController extends Controller
      */
     public function update(BorrowingRequestUpdateRequest $request, BorrowingRequest $borrowingRequest)
     {
+        $room = Room::find($request->room);
+        $computer = Computer::find($request->computer);
+
+        if (empty($room) && empty($computer)) {
+            $computer = Computer::available($borrowingRequest->start_datetime, $borrowingRequest->end_datetime)
+                ->first();
+
+            $room = $computer->room ?? null;
+        } else if (empty($computer)) {
+            $computer = Computer::available($borrowingRequest->start_datetime, $borrowingRequest->end_datetime, $room)
+                ->first();
+        } else {
+            $computer = Computer::available($borrowingRequest->start_datetime, $borrowingRequest->end_datetime, $room, $computer)
+                ->first();
+        }
+
+        if (empty($computer)) {
+            $message = 'No available computers left from ' . $borrowingRequest->start_datetime . ' to ' . $borrowingRequest->end_datetime;
+            $tempComputer = Computer::find($request->computer);
+
+            if (! empty($room)) {
+                $message .= ' in ' . $room->name;
+            }
+
+            if (! empty($tempComputer)) {
+                $message = 'Computer ' . $tempComputer->hostname . ', room ' . $room->name . ' not available from ' . $borrowingRequest->start_datetime . ' to ' . $borrowingRequest->end_datetime;
+            }
+
+            return redirect()->back()->withErrors([
+                'available_computer' => $message . '.',
+            ]);
+        }
+
         if (! empty($request->status) && $request->status === 'Reject') {
             $borrowingRequest->update($request->only(['status', 'rejection_reason']));
         } else {
             $borrowingRequest->update($request->only(['status']));
-        }
 
-        if (! empty($request->room) && ! empty($request->computer)) {
-            $room = Room::find($request->room);
-            $computer = Computer::find($request->computer);
-            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest, $room, $computer);
-        } else if (! empty($request->room)) {
-            $room = Room::find($request->room);
-            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest, $room);
-        } else {
-            $dto = new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest);
+            BorrowingRequestApproved::dispatch(new BorrowingRequestApprovedConstructorDto($borrowingRequest->user, $borrowingRequest, $room, $computer));
         }
-
-        BorrowingRequestApproved::dispatch($dto);
 
         return redirect()->route('admin.borrowing-requests.index');
     }
