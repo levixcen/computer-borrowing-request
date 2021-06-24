@@ -85,18 +85,6 @@ class BorrowingRequestController extends Controller
     {
         $room = Room::find($request->room);
         $computer = Computer::find($request->computer);
-        $currentUserSchedules = Schedule::whereHas('user', function (Builder $query) use ($request) {
-             $query->where('email', $request->user()->email);
-        })->where([
-            ['start_datetime', '<=', $borrowingRequest->end_datetime],
-            ['end_datetime', '>=', $borrowingRequest->start_datetime],
-        ])->get();
-
-        if (! empty($currentUserSchedules)) {
-            return redirect()->back()->withErrors([
-                'schedule' => 'You can only borrow computer once in the specified start and end datetime.',
-            ]);
-        }
 
         if (empty($room) && empty($computer)) {
             $computer = Computer::available($borrowingRequest->start_datetime, $borrowingRequest->end_datetime)

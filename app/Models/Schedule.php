@@ -43,8 +43,8 @@ class Schedule extends Model
     public function scopeCurrent($query)
     {
         return $query->where([
-            ['start_datetime', '<', now()],
-            ['end_datetime', '>', now()]
+            ['start_datetime', '<=', now()],
+            ['end_datetime', '>=', now()]
         ]);
     }
 

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BorrowingRequestStoreRequest;
 use App\Models\BorrowingRequest;
+use App\Models\Schedule;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class BorrowingRequestController extends Controller
@@ -44,6 +46,25 @@ class BorrowingRequestController extends Controller
             'end_datetime' => Carbon::createFromFormat('Y-m-d H:i', $request->date_use . ' ' . $request->end_time),
             'reason' => $request->reason,
         ];
+
+        $currentUserSchedules = Schedule::whereHas('user', function (Builder $query) use ($request) {
+            $query->where('email', $request->user()->email);
+        })->where([
+            ['start_datetime', '<=', $data['end_datetime']],
+            ['end_datetime', '>=', $data['start_datetime']],
+        ])->get();
+        $currentUserBorrowingRequests = BorrowingRequest::whereHas('user', function (Builder $query) use ($request) {
+            $query->where('email', $request->user()->email);
+        })->where([
+            ['start_datetime', '<=', $data['end_datetime']],
+            ['end_datetime', '>=', $data['start_datetime']],
+        ])->noStatus()->get();
+
+        if (! empty($currentUserSchedules) || ! empty($currentUserBorrowingRequests)) {
+            return redirect()->back()->withErrors([
+                'schedule' => 'You can only borrow computer once in the specified start and end datetime.',
+            ]);
+        }
 
         $borrowingRequest = new BorrowingRequest;
         $borrowingRequest->user()->associate($request->user());
