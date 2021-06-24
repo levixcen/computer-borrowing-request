@@ -42,7 +42,7 @@ class BorrowingRequest extends Model
      */
     public function scopeNoStatus($query)
     {
-        return $query->whereNull('status');
+        return $query->where('status', 'Waiting for Approval');
     }
 
     /**
