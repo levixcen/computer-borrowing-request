@@ -45,6 +45,11 @@
                         <span class="text-red-500">{{ $errors->first('reason') }}</span>
                     @enderror
                 </div>
+                <div class="my-2">
+                    @error('schedule')
+                        <span class="text-red-500">{{ $errors->first('schedule') }}</span>
+                    @enderror
+                </div>
                 <div class="mt-4 text-right">
                     <button class="btn bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline">
                         Request
