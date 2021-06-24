@@ -39,7 +39,7 @@ class GenerateBorrowingScheduleModel
      */
     public function handle(BorrowingRequestApproved $event)
     {
-        if ($event->borrowingRequest->status !== 'Accept') {
+        if ($event->borrowingRequest->status !== 'Approved') {
             return;
         }
 

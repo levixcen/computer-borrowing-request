@@ -114,7 +114,7 @@ class BorrowingRequestController extends Controller
             ]);
         }
 
-        if (! empty($request->status) && $request->status === 'Reject') {
+        if (! empty($request->status) && $request->status === 'Rejected') {
             $borrowingRequest->update($request->only(['status', 'rejection_reason']));
         } else {
             $borrowingRequest->update($request->only(['status']));

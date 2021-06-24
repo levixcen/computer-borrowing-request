@@ -23,9 +23,9 @@
                 <div>
                     Reason: {{ $borrowingRequest->reason }}
                 </div>
-                @unless (empty($borrowingRequest->status))
+                @unless ($borrowingRequest->status === 'Waiting for Approval')
                     <div>
-                        Status: @if ($borrowingRequest->status === 'Accept') <span class="text-green-500">Approved</span> @else <span class="text-red-500">Rejected</span> @endif
+                        Status: <span class="@if ($borrowingRequest->status === 'Approved')text-green-500 @else text-red-500 @endif">{{ $borrowingRequest->status }}</span>
                     </div>
                     <div>
                         Rejection Reason: {{ $borrowingRequest->rejection_reason ?? '-' }}
@@ -33,7 +33,7 @@
                 @endunless
             </div>
         </div>
-        @if (empty($borrowingRequest->status))
+        @if ($borrowingRequest->status === 'Waiting for Approval')
             <div class="container w-full max-w-3xl bg-white rounded mx-auto mt-4 p-3 shadow-md">
                 <div>
                     <span class="font-bold text-xl">Change Status</span>
@@ -48,8 +48,8 @@
                         </label>
                         <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight @error('status') border-red-500 @enderror focus:outline-none focus:ring" name="status" id="status">
                             <option value="">-- Choose One --</option>
-                            <option value="Accept" @if ((old('status') ?? '') === 'Accept') selected @endif>Approve</option>
-                            <option value="Reject" @if ((old('status') ?? '') === 'Reject') selected @endif>Reject</option>
+                            <option value="Approved" @if ((old('status') ?? '') === 'Approved') selected @endif>Approve</option>
+                            <option value="Rejected" @if ((old('status') ?? '') === 'Rejected') selected @endif>Reject</option>
                         </select>
                         @error('status')
                             <span class="text-red-500">{{ $errors->first('status') }}</span>
@@ -128,7 +128,7 @@
         let beginning = true;
 
         const changeRejectionReasonContainerState = (value) => {
-            if (value === 'Reject') {
+            if (value === 'Rejected') {
                 document.getElementById('rejection-reason-container').classList.remove('hidden');
             } else {
                 document.getElementById('rejection-reason-container').classList.add('hidden');
@@ -136,7 +136,7 @@
         };
 
         const changeComputerAllocationContainerState = (value) => {
-            if (value === 'Accept') {
+            if (value === 'Approved') {
                 document.getElementById('computer-allocation-container').classList.remove('hidden');
 
                 const radioButtons = document.getElementsByName('computer_allocation');
