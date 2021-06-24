@@ -27,7 +27,7 @@ Route::resource('borrowing-requests', BorrowingRequestController::class)
     ->only(['index', 'show', 'update']);
 
 Route::resource('schedules', ScheduleController::class)
-    ->only(['index', 'show']);
+    ->only(['index', 'show', 'destroy']);
 
 Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function () {
 

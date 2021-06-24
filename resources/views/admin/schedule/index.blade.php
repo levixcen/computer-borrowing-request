@@ -79,7 +79,7 @@
                             <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.schedules.show', ['schedule' => $schedule]) }}">
                                 <x-heroicon-s-clipboard-list style="width: 25px;" />
                             </a>
-                            <a class="mx-2 text-red-500 hover:text-red-700" href="">
+                            <a class="mx-2 text-red-500 hover:text-red-700" href="{{ route('admin.schedules.destroy', ['schedule' => $schedule]) }}">
                                 <x-heroicon-s-trash style="width: 25px;" />
                             </a>
                         </th>

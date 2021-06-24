@@ -56,7 +56,7 @@ class BorrowingRequestController extends Controller
     {
         return view('admin.borrowing-request.show', [
             'borrowingRequest' => $borrowingRequest,
-            'rooms' => Room::all(),
+            'rooms' => Room::available()->get(),
         ]);
     }
 

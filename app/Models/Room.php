@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,17 @@ class Room extends Model
         'name',
         'available',
     ];
+
+    /**
+     * Local scope for get available borrowing rooms.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return mixed
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('available', true);
+    }
 
     /**
      * Relationship to Computer model.
