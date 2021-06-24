@@ -14,20 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', HomeController::class)
-    ->name('home');
+Route::group(['middleware' => 'verified'], function () {
 
-Route::resource('rooms', RoomController::class)
-    ->except(['show']);
+    Route::get('/', HomeController::class)
+        ->name('home');
 
-Route::resource('computers', ComputerController::class)
-    ->except(['index', 'show']);
+    Route::resource('rooms', RoomController::class)
+        ->except(['show']);
 
-Route::resource('borrowing-requests', BorrowingRequestController::class)
-    ->only(['index', 'show', 'update']);
+    Route::resource('computers', ComputerController::class)
+        ->except(['index', 'show']);
 
-Route::resource('schedules', ScheduleController::class)
-    ->only(['index', 'show', 'destroy']);
+    Route::resource('borrowing-requests', BorrowingRequestController::class)
+        ->only(['index', 'show', 'update']);
+
+    Route::resource('schedules', ScheduleController::class)
+        ->only(['index', 'show', 'destroy']);
+
+});
 
 Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function () {
 

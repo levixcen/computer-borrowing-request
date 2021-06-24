@@ -15,14 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/', HomeController::class)
-        ->name('home');
+    Route::group(['middleware' => ['verified']], function () {
 
-    Route::resource('borrowing-requests', BorrowingRequestController::class)
-        ->only(['index', 'create', 'store', 'show']);
+        Route::get('/', HomeController::class)
+            ->name('home');
 
-    Route::resource('schedules', ScheduleController::class)
-        ->only(['show']);
+        Route::resource('borrowing-requests', BorrowingRequestController::class)
+            ->only(['index', 'create', 'store', 'show']);
+
+        Route::resource('schedules', ScheduleController::class)
+            ->only(['show']);
+
+    });
 
 });
 
