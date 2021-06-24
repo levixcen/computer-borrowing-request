@@ -14,7 +14,7 @@
             @yield('contents')
         </div>
     </div>
-    <div class="text-center text-gray-500 z-10 relative">
+    <div class="text-center text-gray-200 z-10 relative">
         <div>
             Copyright @ {{ now()->format('Y') }} Christopher Limawan
         </div>
