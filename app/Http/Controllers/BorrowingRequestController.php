@@ -53,6 +53,7 @@ class BorrowingRequestController extends Controller
             ['start_datetime', '<=', $data['end_datetime']],
             ['end_datetime', '>=', $data['start_datetime']],
         ])->get();
+
         $currentUserBorrowingRequests = BorrowingRequest::whereHas('user', function (Builder $query) use ($request) {
             $query->where('email', $request->user()->email);
         })->where([
@@ -60,7 +61,7 @@ class BorrowingRequestController extends Controller
             ['end_datetime', '>=', $data['start_datetime']],
         ])->noStatus()->get();
 
-        if (! empty($currentUserSchedules) || ! empty($currentUserBorrowingRequests)) {
+        if (! $currentUserSchedules->isEmpty() || ! $currentUserBorrowingRequests->isEmpty()) {
             return redirect()->back()->withErrors([
                 'schedule' => 'You can only borrow computer once in the specified start and end datetime.',
             ]);
