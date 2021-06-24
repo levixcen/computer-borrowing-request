@@ -26,5 +26,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+Route::group(['middleware' => ['auth', 'signed']], function () {
 
+    Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\AuthenticationController::class, 'verifyEmail'])
+        ->name('verification.verify');
+
+});
 

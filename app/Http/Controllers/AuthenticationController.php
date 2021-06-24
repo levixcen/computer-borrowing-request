@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthenticationLoginRequest;
 use App\Http\Requests\AuthenticationRegisterRequest;
 use App\Models\User;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -41,11 +42,13 @@ class AuthenticationController extends Controller
             ]);
         }
 
+        $request->session()->regenerate();
+
         if (Auth::user()->role === $this->getAdministratorKeyName()) {
-            return redirect()->route('admin.home');
+            return redirect()->intended(route('admin.home'));
         }
 
-        return redirect()->route('home');
+        return redirect()->intended(route('home'));
     }
 
     /**
@@ -71,7 +74,55 @@ class AuthenticationController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('auth.form.login');
+        $user->sendEmailVerificationNotification();
+
+        return redirect()->route('auth.verification.notice');
+    }
+
+    /**
+     * Display prompt for verify email.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showVerifyPrompt()
+    {
+        return view('auth.email.verify');
+    }
+
+    /**
+     * Display prompt for email verified.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showVerifiedPrompt()
+    {
+        return view('auth.email.verified');
+    }
+
+    /**
+     * Verify email by check id and hash sent.
+     *
+     * @param \Illuminate\Foundation\Auth\EmailVerificationRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+
+        return redirect()->route('auth.email.verified');
+    }
+
+    /**
+     * Resend verification email.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resendVerificationEmail(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('message', 'Verification link sent!');
     }
 
     /**

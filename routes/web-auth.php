@@ -37,7 +37,17 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
 
+    Route::get('/email/verified', [AuthenticationController::class, 'showVerifiedPrompt'])
+        ->name('email.verified');
+
+    Route::post('/email/verification-notification', [AuthenticationController::class, 'resendVerificationEmail'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
+
     Route::post('/logout', [AuthenticationController::class, 'logout'])
         ->name('logout');
 
 });
+
+Route::get('/email/verify', [AuthenticationController::class, 'showVerifyPrompt'])
+    ->name('verification.notice');
