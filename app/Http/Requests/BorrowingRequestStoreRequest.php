@@ -46,4 +46,16 @@ class BorrowingRequestStoreRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'date_use.after' => 'The :attribute must be minimal 2 days from now',
+        ];
+    }
 }
