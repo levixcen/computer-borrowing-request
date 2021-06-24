@@ -7,23 +7,25 @@
             @unless ($schedules->count() == 0)
                 @foreach ($schedules as $schedule)
                     <div class="w-full p-4 flex cursor-pointer items-center hover:bg-gray-300">
-                        <div class="pr-4">
-                            <x-heroicon-s-desktop-computer />
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold">
-                                {{ $schedule->description }}
+                        <a href="{{ route('schedules.show', ['schedule' => $schedule]) }}">
+                            <div class="pr-4">
+                                <x-heroicon-s-desktop-computer />
                             </div>
-                            <div class="hidden sm:block">
-                                Room {{ $schedule->room->name }}
+                            <div class="flex-1">
+                                <div class="font-bold">
+                                    {{ $schedule->description }}
+                                </div>
+                                <div class="hidden sm:block">
+                                    Room {{ $schedule->room->name ?? '' }}
+                                </div>
+                                <div class="hidden sm:block">
+                                    {{ $schedule->start_datetime }} - {{ $schedule->end_datetime }}
+                                </div>
                             </div>
-                            <div class="hidden sm:block">
-                                {{ $schedule->start_datetime }} - {{ $schedule->end_datetime }}
+                            <div>
+                                &gt;
                             </div>
-                        </div>
-                        <div>
-                            &gt;
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             @else

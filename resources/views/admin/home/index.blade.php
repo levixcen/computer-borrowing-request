@@ -19,7 +19,7 @@
                 @foreach ($borrowingRequests as $borrowingRequest)
                     <tr class="bg-gray-200">
                         <td>{{ $borrowingRequest->created_at->format('d M Y H:i') }}</td>
-                        <td>{{ $borrowingRequest->user->email }}</td>
+                        <td>{{ $borrowingRequest->user->email ?? '' }}</td>
                         <th class="flex items-center justify-center">
                             <a class="mx-2 text-blue-500 hover:text-blue-700" href="{{ route('admin.borrowing-requests.show', ['borrowing_request' => $borrowingRequest]) }}">
                                 <x-heroicon-s-clipboard-list style="width: 25px;" />

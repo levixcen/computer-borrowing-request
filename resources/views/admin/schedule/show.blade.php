@@ -13,7 +13,7 @@
             </div>
             <div class="mt-4">
                 <div>
-                    Request Creator Email: {{ $schedule->user->email }}
+                    Request Creator Email: {{ $schedule->user->email ?? '' }}
                 </div>
                 <div>
                     Request At: {{ $schedule->borrowingRequest->created_at->format('d M Y H:i') }}
@@ -32,10 +32,10 @@
             </div>
             <div class="mt-4">
                 <div>
-                    Room: {{ $schedule->room->name }}
+                    Room: {{ $schedule->room->name ?? '' }}
                 </div>
                 <div>
-                    Computer: {{ $schedule->computer->hostname }} - {{ $schedule->computer->ip_address }}
+                    Computer: {{ $schedule->computer->hostname ?? '' }} - {{ $schedule->computer->ip_address ?? '' }}
                 </div>
                 <div>
                     Username: {{ $schedule->username }}

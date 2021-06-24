@@ -17,7 +17,7 @@ class BorrowingRequestController extends Controller
     public function index(Request $request)
     {
         return view('user.borrowing-request.index', [
-            'borrowingRequests' => BorrowingRequest::where('user_id', $request->user()->id)->orderByDesc('created_at')->paginate(10),
+            'borrowingRequests' => BorrowingRequest::where('user_id', $request->user()->id)->orderByDesc('created_at')->paginate(5),
         ]);
     }
 

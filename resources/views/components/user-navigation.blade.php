@@ -15,7 +15,7 @@
         @unless ($title === 'Borrowing Requests')
             <a class="border-gray-300 border-t-2 p-2 rounded hover:bg-blue-500 hover:text-white" href="{{ route('borrowing-requests.index') }}">
                 <button class="w-full appearance-none">
-                    <x-heroicon-o-pencil-alt style="width: 20px; display: inline-block" /> Request Computer
+                    <x-heroicon-o-pencil-alt style="width: 20px; display: inline-block" /> My Requests
                 </button>
             </a>
         @endunless

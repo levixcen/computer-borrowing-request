@@ -9,7 +9,7 @@
             </div>
             <div class="mt-4">
                 <div>
-                    Request Creator Email: {{ $borrowingRequest->user->email }}
+                    Request Creator Email: {{ $borrowingRequest->user->email ?? '' }}
                 </div>
                 <div>
                     Request At: {{ $borrowingRequest->created_at->format('d M Y H:i') }}

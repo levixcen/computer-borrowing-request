@@ -33,6 +33,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $borrowingRequests->links() }}
         </div>
     </div>
 @endsection

@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
         ->only(['index', 'create', 'store', 'show']);
 
     Route::resource('schedules', ScheduleController::class)
-        ->only(['index', 'show']);
+        ->only(['show']);
 
 });
 
