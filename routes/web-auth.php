@@ -48,6 +48,3 @@ Route::group(['middleware' => ['auth']], function () {
         ->name('logout');
 
 });
-
-Route::get('/email/verify', [AuthenticationController::class, 'showVerifyPrompt'])
-    ->name('verification.notice');

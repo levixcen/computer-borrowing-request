@@ -76,7 +76,7 @@ class AuthenticationController extends Controller
 
         $user->sendEmailVerificationNotification();
 
-        return redirect()->route('auth.verification.notice');
+        return redirect()->route('verification.notice');
     }
 
     /**

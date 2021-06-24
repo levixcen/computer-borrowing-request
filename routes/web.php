@@ -37,3 +37,5 @@ Route::group(['middleware' => ['auth', 'signed']], function () {
 
 });
 
+Route::get('/email/verify', [\App\Http\Controllers\AuthenticationController::class, 'showVerifyPrompt'])
+    ->name('verification.notice');
