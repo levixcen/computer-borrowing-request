@@ -14,4 +14,6 @@ A web application to manage computer borrowing request from students.
 1. Clone this repository with ```git clone https://github.com/christ0208/computer-borrowing-request.git```
 2. Run ```composer install``` to install dependencies
 3. Copy ```.env.example``` to ```.env``` and adjust values in ```.env``` file
-4. Run using ```php artisan serve```
+4. Migrate database structure using ```php artisan migrate```
+5. Seed tables with dummy data using ```php artisan db:seed```
+5. Run using ```php artisan serve```
