@@ -18,9 +18,9 @@ class EnsureUserHasRole
     public function handle(Request $request, Closure $next, $role)
     {
         if ($request->user()->role !== $role && $request->user()->role === $this->getAdministratorKeyName()) {
-            return redirect()->route($this->getUserHomeRouteName());
-        } else if ($request->user()->role !== $role && $request->user()->role === $this->getUserKeyName()) {
             return redirect()->route($this->getAdminHomeRouteName());
+        } else if ($request->user()->role !== $role && $request->user()->role === $this->getUserKeyName()) {
+            return redirect()->route($this->getUserHomeRouteName());
         }
 
         return $next($request);
