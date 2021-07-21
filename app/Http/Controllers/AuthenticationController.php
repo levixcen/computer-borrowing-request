@@ -45,10 +45,10 @@ class AuthenticationController extends Controller
         $request->session()->regenerate();
 
         if (Auth::user()->role === $this->getAdministratorKeyName()) {
-            return redirect()->intended(route('admin.home'));
+            return redirect()->route('admin.home');
         }
 
-        return redirect()->intended(route('home'));
+        return redirect()->route('home');
     }
 
     /**
