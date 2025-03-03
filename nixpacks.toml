@@ -1,3 +1,4 @@
 [phases.setup]
-nixPkgs = ["php7.4",  "php81Packages.composer"]
+nixPkgs = ["php74", "composer", "apacheHttpd", "mariadb"]
+
 
