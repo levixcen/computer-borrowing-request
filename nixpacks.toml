@@ -1,0 +1,13 @@
+[phases.setup]
+nixPkgs = ["php74", "composer", "apacheHttpd", "mariadb"]
+
+[phases.build]
+cmds = [
+  "composer install",
+  "cp .env.example .env",
+  "php artisan migrate",
+  "php artisan db:seed"
+]
+
+[phases.start]
+cmd = "php artisan serve --host=0.0.0.0 --port=8000"
