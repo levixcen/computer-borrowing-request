@@ -1,4 +1,0 @@
-[phases.setup]
-nixPkgs = ["php74", "composer", "apacheHttpd", "mariadb"]
-
-
